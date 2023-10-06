@@ -1,0 +1,11 @@
+﻿[
+  {
+    "Make": "Peugeot",
+    "RegNumber": "LEB989",
+    "VehicleType": "Motorcycle",
+    "DailyCost": 300,
+    "KmCost": 0.5,
+    "Odometer": 22000
+  }
+ 
+]

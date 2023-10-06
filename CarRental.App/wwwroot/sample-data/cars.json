@@ -1,0 +1,36 @@
+﻿[
+  {
+    "Make": "Audi",
+    "RegNumber": "FSL288",
+    "VehicleType": "Sedan",
+    "DailyCost": 100,
+    "KmCost": 2,
+    "Odometer": 20000
+  },
+  {
+    "Make": "BMW",
+    "RegNumber": "ADZ322",
+    "VehicleType": "Combi",
+    "DailyCost": 200,
+    "KmCost": 1.5,
+    "Odometer": 55000
+  },
+  {
+    "Make": "Saab",
+    "RegNumber": "LEW367",
+    "VehicleType": "Sedan",
+    "DailyCost": 300,
+    "KmCost": 5,
+    "Odometer": 3000
+  },
+  {
+    "Make": "Volvo",
+    "RegNumber": "RED782",
+    "VehicleType": "Van",
+    "DailyCost": 250,
+    "KmCost": 2,
+    "Odometer": 10000
+  }
+ 
+ 
+]

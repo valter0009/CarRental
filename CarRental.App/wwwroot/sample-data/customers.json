@@ -1,0 +1,22 @@
+﻿[
+  {
+    "FirstName": "Anna",
+    "LastName": "Lindell",
+    "SocialSecurityNumber": 145566
+  },
+  {
+    "FirstName": "Adam",
+    "LastName": "Löv",
+    "SocialSecurityNumber": 333221
+  },
+  {
+    "FirstName": "Samuel",
+    "LastName": "Bergström",
+    "SocialSecurityNumber": 985234
+  },
+  {
+    "FirstName": "Max",
+    "LastName": "Carlsson",
+    "SocialSecurityNumber": 345345
+  }
+]
