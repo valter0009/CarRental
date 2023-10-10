@@ -1,16 +1,15 @@
 ﻿using CarRental.Common.Classes;
 
-namespace CarRental.Common.Interfaces;
-
-public interface IBooking: IBase
+namespace CarRental.Common.Interfaces
 {
-	public IVehicle Vehicle { get; set; }
-	public Customer Customer { get; set; }
-	public int KmWhenRented { get; set; }
-	public int KmWhenReturned { get; set; }
-	public DateTime RentedDate { get; set; }
-	public DateTime ReturnedDate { get; set; }
-	public int Cost { get; set; }
-	public bool Status { get; set; }
-
+	public interface IBooking
+	{
+		bool BookingStatus { get; set; }
+		double TotalCost { get; set; }
+		double KmReturned { get; set; }
+		Customer Customer { get; init; }
+		public DateTime RentedDate {  get; set; }
+		DateTime ReturnedDate { get; set; }
+		IVehicle Vehicle { get; init; }
+	}
 }

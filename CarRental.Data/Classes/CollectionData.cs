@@ -35,6 +35,10 @@ public class CollectionData : IData
 		_vehicles.AddRange(resultMotorcycles.OfType<IVehicle>().ToList());
 		} catch { }
 
+		//Tillfälliga bokningar, ska göras om i VG uppgiften 
+		_bookings.Add(new Booking(_vehicles.ElementAt(1), (Customer)_persons.ElementAt(1)));
+		_bookings.Add(new Booking(_vehicles.ElementAt(2), (Customer)_persons.ElementAt(2)));
+	    
 
 	}
 

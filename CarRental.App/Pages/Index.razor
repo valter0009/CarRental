@@ -10,6 +10,12 @@
 	{
 		await bp.LoadData();
 
+		//Används för att demonstrera bokningar i G uppgiften, ska göras om i VG delen
+		var booking1 = bp.GetBookings().ElementAt(0);
+		var booking2 = bp.GetBookings().ElementAt(1);
+
+		bp.ReturnVehicle(booking2, 3500);
+
 	}
 }
 
@@ -45,7 +51,7 @@
 						<td>@vehicle.Odometer</td>
 						<td>@vehicle.KmCost</td>
 						<td>@vehicle.VehicleType</td>
-						<td>@vehicle.DailyCost</td>
+						<td>@vehicle.DailyCost $</td>
 						<td>Otto</td>
 						<td></td>
 					</tr>
@@ -72,36 +78,26 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr>
-					<th scope="row">1</th>
-					<td>Mark</td>
-					<td>Otto</td>
-					<td>Otto</td>
-					<td>Otto</td>
-					<td>Otto</td>
-					<td>Otto</td>
-					<td></td>
-				</tr>
-				<tr>
-					<th scope="row">1</th>
-					<td>Mark</td>
-					<td>Otto</td>
-					<td>Otto</td>
-					<td>Otto</td>
-					<td>Otto</td>
-					<td>Otto</td>
-					<td></td>
-				</tr>
-				<tr>
-					<th scope="row">1</th>
-					<td>Mark</td>
-					<td>Otto</td>
-					<td>Otto</td>
-					<td>Otto</td>
-					<td>Otto</td>
-					<td>Otto</td>
-					<td></td>
-				</tr>
+				@foreach (var booking in bp.GetBookings())
+				{
+					<tr>
+
+						<td>@booking.Vehicle.RegNumber</td>
+						<td>@booking.Customer.FullName</td>
+						<td>@booking.Vehicle.Odometer</td>
+						<td>@booking.KmReturned </td>
+						<td>@booking.RentedDate.ToString("d")</td>
+						<td>@booking.ReturnedDate.ToString("d")</td>
+						<td>@booking.TotalCost $</td>
+						<td>
+							<span class="badge font-weight-normal fs-6 @(booking.BookingStatus ? "bg-danger" : "bg-success")">
+								@(booking.BookingStatus ? "Open" : "Closed")
+							</span>
+						</td>
+
+					</tr>
+				}
+
 			</tbody>
 		</table>
 	</div>
@@ -113,8 +109,8 @@
 			<thead>
 				<tr>
 					<th scope="col">SSN</th>
-					<th scope="col">Last Name</th>
 					<th scope="col">First Name</th>
+					<th scope="col">Last Name</th>
 
 				</tr>
 			</thead>
@@ -132,3 +128,4 @@
 		</table>
 	</div>
 </div>
+

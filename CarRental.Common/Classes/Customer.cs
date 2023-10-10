@@ -12,8 +12,8 @@ public class Customer : IPerson
 	public string FirstName { get; set; }
 	public string LastName { get; set; }
 	public int SocialSecurityNumber { get; set; }
-
-    public Customer(string firstname, string lastname, int socialsecuritynumber)
+	public string FullName => $"{FirstName} {LastName}";
+	public Customer(string firstname, string lastname, int socialsecuritynumber)
     {
         FirstName = firstname;
         LastName = lastname;

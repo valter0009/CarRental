@@ -13,7 +13,7 @@ public interface IData
 	IEnumerable<IPerson> GetPersons();
 	IEnumerable<IVehicle> GetVehicles(VehicleStatuses status = default);
 	IEnumerable<IBooking> GetBookings();
-	public async Task LoadDataFromJson() { }
+	async Task LoadDataFromJson() { }
 
 	/*
 	 * IBooking GetBooking(int vehicleID);

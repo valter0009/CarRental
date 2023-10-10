@@ -7,15 +7,28 @@ using System.Threading.Tasks;
 
 namespace CarRental.Common.Classes
 {
-	public class Booking:IBooking
+	public class Booking : IBooking
 	{
-		public IVehicle Vehicle { get; set; }
-		public Customer Customer { get; set; }
-		public int KmWhenRented { get; set; }
-		public int KmWhenReturned { get; set; }
+		public IVehicle Vehicle { get; init; }
+		public Customer Customer { get; init; }
+
 		public DateTime RentedDate { get; set; }
 		public DateTime ReturnedDate { get; set; }
-		public int Cost { get; set; }
-		public bool Status { get; set; } = false;
+
+		public double KmReturned {  get; set; }
+		public double TotalCost { get; set; }
+		public bool BookingStatus { get; set; } = false;
+
+		public Booking(IVehicle vehicle, Customer customer)
+		{
+			Vehicle = vehicle;
+			Customer = customer;
+			RentedDate = DateTime.Now;
+			BookingStatus = true;
+		}
+
+		
+
+		
 	}
 }

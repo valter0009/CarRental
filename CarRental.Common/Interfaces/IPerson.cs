@@ -1,8 +1,9 @@
 ﻿namespace CarRental.Common.Interfaces;
 
-public interface IPerson: IBase
+public interface IPerson : IBase
 {
-	public string FirstName { get; set; }
-	public string LastName { get; set; }
-	public int SocialSecurityNumber { get; set; }
+	string FirstName { get; set; }
+	string LastName { get; set; }
+	int SocialSecurityNumber { get; set; }
+	string FullName => $"{FirstName} {LastName}";
 }
