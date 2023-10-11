@@ -7,14 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Remove="wwwroot\sample-data\bookings.json" />
     <Content Remove="wwwroot\sample-data\cars.json" />
     <Content Remove="wwwroot\sample-data\customers.json" />
     <Content Remove="wwwroot\sample-data\motorcycles.json" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="wwwroot\sample-data\bookings.json" />
     <None Include="wwwroot\sample-data\motorcycles.json" />
     <None Include="wwwroot\sample-data\customers.json" />
     <None Include="wwwroot\sample-data\cars.json" />
