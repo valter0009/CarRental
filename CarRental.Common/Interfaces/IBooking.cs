@@ -8,8 +8,8 @@ namespace CarRental.Common.Interfaces
 		double TotalCost { get; set; }
 		double KmReturned { get; set; }
 		Customer Customer { get; init; }
-		public DateTime RentedDate {  get; set; }
-		DateTime ReturnedDate { get; set; }
+		DateTime RentedDate { get; init; }
+		DateTime ReturnedDate { get; set; } 
 		IVehicle Vehicle { get; init; }
 	}
 }

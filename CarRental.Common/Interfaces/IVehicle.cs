@@ -5,14 +5,14 @@ namespace CarRental.Common.Interfaces;
 
 public interface IVehicle : IBase
 {
-	string Make { get; set; }
-	string RegNumber { get; set; }
+	string Make { get; init; }
+	string RegNumber { get; init; }
 
 	[JsonConverter(typeof(JsonStringEnumConverter))]
-	VehicleTypes VehicleType { get; set; }
-
-	double DailyCost { get; set; }
-	double KmCost { get; set; }
+	VehicleTypes VehicleType { get; init; }
+	VehicleStatuses VehicleStatus { get; set; }
+	double DailyCost { get; init; }
+	double KmCost { get; init; }
 	double Odometer { get; set; }
 
 

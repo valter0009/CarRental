@@ -6,15 +6,15 @@ namespace CarRental.Common.Classes
 {
 	public class Motorcycle : IVehicle
 	{
-		public string Make { get; set; }
-		public string RegNumber { get; set; }
+		public string Make { get; init; }
+		public string RegNumber { get; init; }
 
 		[JsonConverter(typeof(JsonStringEnumConverter))]
-		public VehicleTypes VehicleType { get; set; }
-	
+		public VehicleTypes VehicleType { get; init; }
+		public VehicleStatuses VehicleStatus { get; set; } = VehicleStatuses.Available;
 
-		public double DailyCost { get; set; }
-		public double KmCost { get; set; }
+		public double DailyCost { get; init; }
+		public double KmCost { get; init; }
 		public double Odometer { get; set; }
 
 

@@ -52,8 +52,11 @@
 						<td>@vehicle.KmCost</td>
 						<td>@vehicle.VehicleType</td>
 						<td>@vehicle.DailyCost $</td>
-						<td>Otto</td>
-						<td></td>
+						<td>
+							<span class="badge font-weight-normal fs-7 @(vehicle.VehicleStatus == VehicleStatuses.Available ? "bg-dark" : "bg-danger")">
+								@(vehicle.VehicleStatus == VehicleStatuses.Available ? "Available" : "Booked")
+							</span>
+						</td>
 					</tr>
 				}
 
@@ -87,7 +90,11 @@
 						<td>@booking.Vehicle.Odometer</td>
 						<td>@booking.KmReturned </td>
 						<td>@booking.RentedDate.ToString("d")</td>
-						<td>@booking.ReturnedDate.ToString("d")</td>
+						<td>
+							<span class="@(booking.ReturnedDate < booking.RentedDate ? "d-none" : "")">
+								@booking.ReturnedDate.ToString("d")
+							</span>
+						</td>
 						<td>@booking.TotalCost $</td>
 						<td>
 							<span class="badge font-weight-normal fs-6 @(booking.BookingStatus ? "bg-danger" : "bg-success")">

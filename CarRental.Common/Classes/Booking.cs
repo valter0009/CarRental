@@ -1,4 +1,5 @@
-﻿using CarRental.Common.Interfaces;
+﻿using CarRental.Common.Enums;
+using CarRental.Common.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,7 @@ namespace CarRental.Common.Classes
 		public IVehicle Vehicle { get; init; }
 		public Customer Customer { get; init; }
 
-		public DateTime RentedDate { get; set; }
+		public DateTime RentedDate { get; init; }
 		public DateTime ReturnedDate { get; set; }
 
 		public double KmReturned {  get; set; }
@@ -25,6 +26,7 @@ namespace CarRental.Common.Classes
 			Customer = customer;
 			RentedDate = DateTime.Now;
 			BookingStatus = true;
+			vehicle.VehicleStatus = VehicleStatuses.Booked;
 		}
 
 		

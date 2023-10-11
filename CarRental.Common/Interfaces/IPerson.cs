@@ -2,8 +2,8 @@
 
 public interface IPerson : IBase
 {
-	string FirstName { get; set; }
-	string LastName { get; set; }
-	int SocialSecurityNumber { get; set; }
+	string FirstName { get; init; }
+	string LastName { get; init; }
+	int SocialSecurityNumber { get; init; }
 	string FullName => $"{FirstName} {LastName}";
 }

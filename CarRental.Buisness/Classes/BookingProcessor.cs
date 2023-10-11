@@ -29,8 +29,9 @@ public class BookingProcessor
 
 	
 	public IEnumerable<IVehicle> GetVehicles(VehicleStatuses status = default) {
-
+		
 		return _db.GetVehicles();
+
 	}
 
 	public IEnumerable<IBooking> GetBookings() {
@@ -42,12 +43,14 @@ public class BookingProcessor
 		
 	}
 
-/*  public void BookVehicle(IVehicle vehicle, Customer customer)
+	
+ /* public void BookVehicle(IVehicle vehicle, Customer customer)
 	{
 		Booking booking = new(vehicle, customer);
 		
+		
 	}
-*/
+ */
 	public void ReturnVehicle(IBooking booking, double kmreturned)
 
 	{
@@ -55,12 +58,13 @@ public class BookingProcessor
 		booking.ReturnedDate = DateTime.Now;
 		booking.BookingStatus = false;
 		booking.TotalCost = CalculateDailyCost(booking, booking.RentedDate, booking.ReturnedDate, booking.Vehicle.DailyCost) + CalculateKmCost(booking, booking.KmReturned);
-
+		booking.Vehicle.VehicleStatus = VehicleStatuses.Available;
 
 	}
 
 	double CalculateKmCost(IBooking booking, double kmreturned)
 	{
+		if (kmreturned < booking.Vehicle.Odometer) throw new Exception("Km count when returned cannot be less than the vehicle's odometer reading.");
 		double KmCost = (kmreturned - booking.Vehicle.Odometer) * booking.Vehicle.KmCost;
 		return KmCost;
 	}
