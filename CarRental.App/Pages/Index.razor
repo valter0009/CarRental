@@ -29,8 +29,8 @@
 <div class="container">
 	<h4 class=" my-3">Vehicles</h4>
 
-	<div id="vehicles" class="border table-responsive col-12">
-		<table class="table table-borderless">
+	<div id="vehicles" class="table-responsive col-12  ">
+		<table class="table table-bordered ">
 			<thead>
 				<tr>
 					<th scope="col">RegNo</th>
@@ -38,8 +38,29 @@
 					<th scope="col">Odometer</th>
 					<th scope="col">Cost Km</th>
 					<th scope="col">Vehicle Type</th>
-					<th scope="col">$ Day</th>
+					<th scope="col">$Day</th>
+					<th scope="col">Action</th>
 					<th scope="col">Status</th>
+				</tr>
+				<tr>
+					<th><input type="text" class="form-control my-2" placeholder="RegNo" aria-label="RegNo" aria-describedby="basic-addon1"></th>
+					<th><input type="text" class="form-control my-2" placeholder="Make" aria-label="Make" aria-describedby="basic-addon1"></th>
+					<th><input type="text" class="form-control my-2" placeholder="Odometer" aria-label="Odometer" aria-describedby="basic-addon1"></th>
+					<th><input type="text" class="form-control my-2" placeholder="Cost Km" aria-label="Cost Km" aria-describedby="basic-addon1"></th>
+					<th>
+						<div class="input-group my-2">
+							<select class="form-select" id="inputGroupSelect02">
+								<option selected>Type</option>
+								<option value="1">One</option>
+								<option value="2">Two</option>
+								<option value="3">Three</option>
+							</select>
+
+						</div>
+					</th>
+					<th></th>
+					<th><span class="input-group-text my-2" id="basic-addon1">Add vehicle</span></th>
+
 				</tr>
 			</thead>
 			<tbody>
@@ -51,7 +72,21 @@
 						<td>@vehicle.Odometer</td>
 						<td>@vehicle.KmCost</td>
 						<td>@vehicle.VehicleType</td>
-						<td>@vehicle.DailyCost $</td>
+						<td>@vehicle.DailyCost$</td>
+
+						<td>
+							<div class="input-group my-2" >
+								<select class="form-select" id="inputGroupSelect02">
+									<option selected>Type</option>
+									<option value="1">One</option>
+									<option value="2">Two</option>
+									<option value="3">Three</option>
+								</select>
+								<span class="input-group-text my-2" id="basic-addon1">Add</span>
+							</div>
+						</td>
+
+
 						<td>
 							<span class="badge font-weight-normal fs-7 @(vehicle.VehicleStatus == VehicleStatuses.Available ? "bg-dark" : "bg-danger")">
 								@(vehicle.VehicleStatus == VehicleStatuses.Available ? "Available" : "Booked")
@@ -118,7 +153,13 @@
 					<th scope="col">SSN</th>
 					<th scope="col">First Name</th>
 					<th scope="col">Last Name</th>
+				</tr>
 
+				<tr>
+					<th><input type="text" class="form-control my-2" placeholder="SSN" aria-label="SSN" aria-describedby="basic-addon1"></th>
+					<th><input type="text" class="form-control my-2" placeholder="First Name" aria-label="First Name" aria-describedby="basic-addon1"></th>
+					<th><input type="text" class="form-control my-2" placeholder="Last Name" aria-label="Last Name" aria-describedby="basic-addon1"></th>
+					<th><span class="input-group-text my-2" id="basic-addon1">Add</span></th>
 				</tr>
 			</thead>
 			<tbody>

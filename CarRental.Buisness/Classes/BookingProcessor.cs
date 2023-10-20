@@ -28,7 +28,7 @@ public class BookingProcessor
 	}
 
 	
-	public IEnumerable<IVehicle> GetVehicles(VehicleStatuses status = default) {
+	public IEnumerable<Vehicle> GetVehicles(VehicleStatuses status = default) {
 		
 		return _db.GetVehicles();
 
@@ -76,4 +76,31 @@ public class BookingProcessor
 		else return dailycost * daysDifference;
 		
 	}
+
+
+
+	/*
+
+ public IEnumerable<IBooking> GetBookings() { }
+ public IEnumerable<Customer> GetCustomers() { }
+ public IPerson? GetPerson(string ssn) { }
+ public IEnumerable<Vehicle> GetVehicles(VehicleStatuses status = default){ }
+ public Vehicle? GetVehicle(int vehicleId) { }
+ public Vehicle? GetVehicle(string regNo) { }
+ public lägg till asynkron returdata typ RentVehicle(int vehicleId, int
+customerId)
+ {
+ // Använd Task.Delay för att simulera tiden det tar
+ // att hämta data från ett API.
+ }
+ public IBooking ReturnVehicle(int vehicleId, double ditance) { }
+ public void AddVehicle(string make, string registrationNumber, double
+odometer, double costKm, VehicleStatuses status, VehicleTypes type) { }
+ public void AddCustomer(string socialSecurityNumber, string firstName, string
+lastName) { }
+ // Calling Default Interface Methods
+ public string[] VehicleStatusNames => _db.VehicleStatusNames;
+ public string[] VehicleTypeNames => _db.VehicleTypeNames;
+ public VehicleTypes GetVehicleType(string name) => _db.GetVehicleType(name);
+	*/
 }
