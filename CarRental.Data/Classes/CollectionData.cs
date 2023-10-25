@@ -72,7 +72,7 @@ public class CollectionData : IData
 
 		var value = collections.GetValue(this) ?? throw new InvalidDataException();
 
-		return ((List<T>)value).ToList();
+		return ((List<T>)value);
 	}
 
 	public List<T> Get<T>(Expression<Func<T, bool>>? expression) where T : IBase
@@ -127,8 +127,8 @@ public class CollectionData : IData
 		{
 			if (item is not null)
 			{
-				var collection = GetCollection<T>();
-				collection.Add(item);
+			  GetCollection<T>().Add(item);
+				
 			}
 		}
 		catch (Exception ex)
