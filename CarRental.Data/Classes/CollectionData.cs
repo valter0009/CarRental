@@ -2,16 +2,16 @@
 using CarRental.Common.Enums;
 using CarRental.Common.Interfaces;
 using CarRental.Common.Classes;
-using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
+using CarRental.Common.Extensions;
 
 namespace CarRental.Data.Classes;
 
 public class CollectionData : IData
 {
 	readonly List<IPerson> _persons = new List<IPerson>();
-	readonly List<Vehicle> _vehicles = new List<Vehicle>();	
+	readonly List<Vehicle> _vehicles = new List<Vehicle>();
 	readonly List<IBooking> _bookings = new List<IBooking>();
 	LoadData _data;
 	public CollectionData(LoadData data)
@@ -55,47 +55,47 @@ public class CollectionData : IData
 
 
 	}
-	public IEnumerable<IPerson> GetPersons() => _persons;
-	public IEnumerable<IBooking> GetBookings() => _bookings;
-	public IEnumerable<Vehicle> GetVehicles(VehicleStatuses status = default) => _vehicles;
 
 	//********************nytt
 	public int NextVehicleId => _vehicles.Count.Equals(0) ? 1 : _vehicles.Max(b => b.Id) + 1;
 	public int NextPersonId => _persons.Count.Equals(0) ? 1 : _persons.Max(b => b.Id) + 1;
 	public int NextBookingId => _bookings.Count.Equals(0) ? 1 : _bookings.Max(b => b.Id) + 1;
+
+
+
+
+	private List<T> GetCollection<T>() where T : IBase
+	{
+		var collections = GetType().GetFields(BindingFlags.NonPublic | BindingFlags.Instance)
+			.FirstOrDefault(f => f.FieldType == typeof(List<T>) && f.IsInitOnly)
+			?? throw new InvalidOperationException("Unsupported type");
+
+		var value = collections.GetValue(this) ?? throw new InvalidDataException();
+
+		return ((List<T>)value).ToList();
+	}
+
 	public List<T> Get<T>(Expression<Func<T, bool>>? expression) where T : IBase
 	{
 		try
 		{
-			var collections = GetType().GetFields(BindingFlags.NonPublic | BindingFlags.Instance)
-                .FirstOrDefault(f => f.FieldType == typeof(List<T>) && f.IsInitOnly)
-                ?? throw new InvalidOperationException("Unsupported type");
+			var collection = GetCollection<T>().AsQueryable();
 
-            var value = collections.GetValue(this) ?? throw new InvalidDataException();
+			if (expression is null) return collection.ToList();
 
-            var collection = ((List<T>)value).AsQueryable();
-
-            if (expression is null) return collection.ToList();
-
-            return collection.Where(expression).ToList();
+			return collection.Where(expression).ToList();
 		}
 		catch (Exception ex)
 		{
 			throw;
 		}
-
 	}
+
 	public T? Single<T>(Expression<Func<T, bool>>? expression) where T : IBase
 	{
 		try
 		{
-			var collections = GetType().GetFields(BindingFlags.NonPublic | BindingFlags.Instance)
-				.FirstOrDefault(f => f.FieldType == typeof(List<T>) && f.IsInitOnly)
-				?? throw new InvalidOperationException("Unsupported type");
-
-			var value = collections.GetValue(this) ?? throw new InvalidDataException();
-
-			var collection = ((List<T>)value).AsQueryable();
+			var collection = GetCollection<T>().AsQueryable();
 
 			if (expression is null)
 			{
@@ -103,7 +103,6 @@ public class CollectionData : IData
 			}
 
 			var filteredCollection = collection.Where(expression).ToList();
-			
 
 			if (filteredCollection.Count == 0)
 			{
@@ -121,34 +120,55 @@ public class CollectionData : IData
 			throw;
 		}
 	}
-	public void Add<T>(T item)
-	{
-		if (item == null)
-		{
-			throw new ArgumentNullException(nameof(item));
-		}
 
-		switch (item)
+	public void Add<T>(T item) where T : IBase
+	{
+		try
 		{
-			case IPerson person:
-				person.Id = NextPersonId;
-				_persons.Add(person);
-				break;
-			case Vehicle vehicle:
-				vehicle.Id = NextVehicleId;
-				_vehicles.Add(vehicle);
-				break;
-			case IBooking booking:
-				booking.Id = NextBookingId;
-				_bookings.Add(booking);
-				break;
-			default:
-				throw new ArgumentException("Unsupported item type", nameof(item));
+			if (item is not null)
+			{
+				var collection = GetCollection<T>();
+				collection.Add(item);
+			}
+		}
+		catch (Exception ex)
+		{
+			throw;
 		}
 	}
 
-	public IBooking RentVehicle(int vehicleId, int customerId) {  throw new NotImplementedException(); }
-	public	IBooking ReturnVehicle(int vehicleId) {  throw new NotImplementedException(); }
 
-	
+	public IBooking RentVehicle(int vehicleId, int customerId)
+	{
+		var vehicle = _vehicles.First(x => x.Id.Equals(vehicleId));
+		var customer = _persons.First(x => x.Id.Equals(customerId));
+
+		if (vehicle == null)
+		{
+			throw new ArgumentNullException("Vehicle not found");
+		}
+
+		if (customer == null)
+		{
+			throw new ArgumentNullException("Customer not found");
+		}
+		Booking booking = new Booking(vehicle, (Customer)customer);
+
+		_bookings.Add(booking);
+
+		return booking;
+	}
+	public IBooking ReturnVehicle(int vehicleId, double kmReturned)
+	{
+		var booking = _bookings.First(x => x.Vehicle.Id.Equals(vehicleId));
+		booking.KmReturned = kmReturned;
+		booking.ReturnedDate = DateTime.Now;
+		booking.BookingStatus = false;
+		booking.Vehicle.VehicleStatus = VehicleStatuses.Available;
+		booking.TotalCost();
+		return booking;
+
+	}
+
+
 }

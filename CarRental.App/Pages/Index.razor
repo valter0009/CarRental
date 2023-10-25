@@ -14,7 +14,7 @@
 		var booking1 = bp.GetBookings().ElementAt(0);
 		var booking2 = bp.GetBookings().ElementAt(1);
 
-		bp.ReturnVehicle(booking2, 3500);
+		bp.AddVehicle("Lada", "FFF222", VehicleTypes.Sedan, 200, 2, 2500);
 
 	}
 }
@@ -163,7 +163,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				@foreach (var customer in bp.GetCustomer())
+				@foreach (var customer in bp.GetCustomers())
 				{
 					<tr>
 						<th scope="row">@customer.SocialSecurityNumber</th>

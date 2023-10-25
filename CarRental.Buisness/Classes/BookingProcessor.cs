@@ -10,7 +10,7 @@ namespace CarRental.Buisness.Classes;
 public class BookingProcessor
 {
 	private readonly IData _db;
-	
+
 
 	public BookingProcessor(IData db) => _db = db;
 
@@ -19,88 +19,65 @@ public class BookingProcessor
 		await _db.LoadDataFromJson();
 	}
 
-	public IEnumerable<IPerson> GetCustomer()
+	public IEnumerable<IBooking> GetBookings()
 	{
-		
-		return _db.GetPersons();
-
-
+		return _db.Get<IBooking>(null);
 	}
-
-	
-	public IEnumerable<Vehicle> GetVehicles(VehicleStatuses status = default) {
-		
-		return _db.GetVehicles();
-
-	}
-
-	public IEnumerable<IBooking> GetBookings() {
-
-		
-		return _db.GetBookings();
-		
-		
-		
-	}
-
-	
- /* public void BookVehicle(IVehicle vehicle, Customer customer)
+	public IEnumerable<IPerson> GetCustomers()
 	{
-		Booking booking = new(vehicle, customer);
-		
-		
-	}
- */
-	public void ReturnVehicle(IBooking booking, double kmreturned)
+		return _db.Get<IPerson>(null);
 
+	}
+	public IPerson? GetPerson(int ssn)
 	{
-		booking.KmReturned = kmreturned;
-		booking.ReturnedDate = DateTime.Now;
-		booking.BookingStatus = false;
-		booking.TotalCost = CalculateDailyCost(booking, booking.RentedDate, booking.ReturnedDate, booking.Vehicle.DailyCost) + CalculateKmCost(booking, booking.KmReturned);
-		booking.Vehicle.VehicleStatus = VehicleStatuses.Available;
-
+		return _db.Single<IPerson>(x => x.SocialSecurityNumber == ssn);
 	}
-
-	double CalculateKmCost(IBooking booking, double kmreturned)
+	public IEnumerable<Vehicle> GetVehicles(VehicleStatuses status = default)
 	{
-		if (kmreturned < booking.Vehicle.Odometer) throw new Exception("Km count when returned cannot be less than the vehicle's odometer reading.");
-		double KmCost = (kmreturned - booking.Vehicle.Odometer) * booking.Vehicle.KmCost;
-		return KmCost;
+		return _db.Get<Vehicle>(null);
 	}
-	public double CalculateDailyCost(IBooking booking, DateTime rented, DateTime returned, double dailycost)
+	public Vehicle? GetVehicle(int vehicleId)
 	{
-		TimeSpan timeDifference = rented - returned;
-		int daysDifference = timeDifference.Days;
-		if (daysDifference < 1) return dailycost;
-		else return dailycost * daysDifference;
-		
+		return _db.Single<Vehicle>(x => x.Id == vehicleId);
 	}
+	public Vehicle? GetVehicle(string regNo)
+	{
+		return _db.Single<Vehicle>(x => x.RegNumber == regNo);
+	}
+	public async Task RentVehicle(int vehicleId, int
+   customerId)
+	{
+		await Task.Delay(5000);
+		_db.RentVehicle(vehicleId, customerId);
+		// Använd Task.Delay för att simulera tiden det tar
+		// att hämta data från ett API.
+	}
+	public IBooking ReturnVehicle(int vehicleId, double kmReturned)
+	{
+		return _db.ReturnVehicle(vehicleId, kmReturned);
+	}
+	public void AddVehicle(string make, string regnumber, VehicleTypes vehicletype, double dailycost, double kmcost, double odometer)
+	{
+		if (vehicletype == VehicleTypes.Motorcycle)
+		{
+			Motorcycle vehicle = new Motorcycle(make, regnumber, vehicletype, dailycost, kmcost, odometer);
+			_db.Add<Vehicle>(vehicle);
+		}
+
+		else
+		{
+			Car vehicle = new Car(make, regnumber, vehicletype, dailycost, kmcost, odometer);
+			_db.Add<Vehicle>(vehicle);
+		}
 
 
+	}
+	public void AddCustomer(string socialSecurityNumber, string firstName, string
+   lastName)
+	{ }
+	// Calling Default Interface Methods
+	public string[] VehicleStatusNames => _db.VehicleStatusNames;
+	public string[] VehicleTypeNames => _db.VehicleTypeNames;
+	public VehicleTypes GetVehicleType(string name) => _db.GetVehicleType(name);
 
-	/*
-
- public IEnumerable<IBooking> GetBookings() { }
- public IEnumerable<Customer> GetCustomers() { }
- public IPerson? GetPerson(string ssn) { }
- public IEnumerable<Vehicle> GetVehicles(VehicleStatuses status = default){ }
- public Vehicle? GetVehicle(int vehicleId) { }
- public Vehicle? GetVehicle(string regNo) { }
- public lägg till asynkron returdata typ RentVehicle(int vehicleId, int
-customerId)
- {
- // Använd Task.Delay för att simulera tiden det tar
- // att hämta data från ett API.
- }
- public IBooking ReturnVehicle(int vehicleId, double ditance) { }
- public void AddVehicle(string make, string registrationNumber, double
-odometer, double costKm, VehicleStatuses status, VehicleTypes type) { }
- public void AddCustomer(string socialSecurityNumber, string firstName, string
-lastName) { }
- // Calling Default Interface Methods
- public string[] VehicleStatusNames => _db.VehicleStatusNames;
- public string[] VehicleTypeNames => _db.VehicleTypeNames;
- public VehicleTypes GetVehicleType(string name) => _db.GetVehicleType(name);
-	*/
 }

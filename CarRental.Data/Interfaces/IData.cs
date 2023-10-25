@@ -15,19 +15,16 @@ public interface IData
 	int NextVehicleId { get; }
 	int NextPersonId { get; }
 	int NextBookingId { get; }
-	IEnumerable<IPerson> GetPersons();
-	IEnumerable<Vehicle> GetVehicles(VehicleStatuses status = default);
-	IEnumerable<IBooking> GetBookings();
 	async Task LoadDataFromJson() { }
 
 	List<T> Get<T>(Expression<Func<T, bool>>? expression) where T : IBase;
 	T? Single<T>(Expression<Func<T, bool>>? expression) where T : IBase;
-	public void Add<T>(T item);
+	public void Add<T>(T item) where T : IBase;
 
 	public string[] VehicleStatusNames => Enum.GetNames(typeof(VehicleStatuses));
 	public string[] VehicleTypeNames => Enum.GetNames(typeof(VehicleTypes));
 	public IBooking RentVehicle(int vehicleId, int customerId);
-	public IBooking ReturnVehicle(int vehicleId);
+	public IBooking ReturnVehicle(int vehicleId, double kmReturned);
 	public VehicleTypes GetVehicleType(string name)
 	{
 		if (Enum.TryParse(name, out VehicleTypes vehicleType))
