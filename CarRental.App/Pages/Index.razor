@@ -10,12 +10,11 @@
 	{
 		await bp.LoadData();
 
-		//Används för att demonstrera bokningar i G uppgiften, ska göras om i VG delen
-		var booking1 = bp.GetBookings().ElementAt(0);
-		var booking2 = bp.GetBookings().ElementAt(1);
 
 		bp.AddVehicle("Lada", "FFF222", VehicleTypes.Sedan, 200, 2, 2500);
 
+		await bp.RentVehicle(6, 1);
+		bp.ReturnVehicle(6, 3000);
 	}
 }
 

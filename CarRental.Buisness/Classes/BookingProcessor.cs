@@ -47,8 +47,8 @@ public class BookingProcessor
 	public async Task RentVehicle(int vehicleId, int
    customerId)
 	{
-		await Task.Delay(5000);
-		_db.RentVehicle(vehicleId, customerId);
+		await Task.Delay(5);
+		 _db.RentVehicle(vehicleId, customerId);
 		// Använd Task.Delay för att simulera tiden det tar
 		// att hämta data från ett API.
 	}

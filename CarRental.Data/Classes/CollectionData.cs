@@ -54,9 +54,9 @@ public class CollectionData : IData
 		}
 		catch (Exception ex) { }
 
-		//Tillfälliga bokningar, ska göras om i VG uppgiften 
+		/*Tillfälliga bokningar, ska göras om i VG uppgiften 
 		_bookings.Add(new Booking(_vehicles.ElementAt(1), (Customer)_persons.ElementAt(1)));
-		_bookings.Add(new Booking(_vehicles.ElementAt(2), (Customer)_persons.ElementAt(2)));
+		_bookings.Add(new Booking(_vehicles.ElementAt(2), (Customer)_persons.ElementAt(2)));*/
 
 
 	}
@@ -173,7 +173,7 @@ public class CollectionData : IData
 		booking.ReturnedDate = DateTime.Now;
 		booking.BookingStatus = false;
 		booking.Vehicle.VehicleStatus = VehicleStatuses.Available;
-		booking.TotalCost();
+		booking.TotalCost= booking.TotalCost();
 		return booking;
 
 	}
