@@ -5,6 +5,8 @@ using CarRental.Common.Classes;
 using System.Linq.Expressions;
 using System.Reflection;
 using CarRental.Common.Extensions;
+using System;
+using System.Runtime.ConstrainedExecution;
 
 namespace CarRental.Data.Classes;
 
@@ -31,20 +33,23 @@ public class CollectionData : IData
 
 			foreach (var person in resultPersons)
 			{
-				person.Id = NextPersonId;
+
 				_persons.Add((IPerson)person);
+				GetNextItemId(_persons, (IPerson)person);
 			}
 
 			foreach (var car in resultCars)
 			{
-				car.Id = NextVehicleId;
+
 				_vehicles.Add((Vehicle)car);
+				GetNextItemId(_vehicles, (Vehicle)car);
 			}
 
 			foreach (var motorcycle in resultMotorcycles)
 			{
-				motorcycle.Id = NextVehicleId;
+
 				_vehicles.Add((Vehicle)motorcycle);
+				GetNextItemId(_vehicles, (Vehicle)motorcycle);
 			}
 		}
 		catch (Exception ex) { }
@@ -57,12 +62,14 @@ public class CollectionData : IData
 	}
 
 	//********************nytt
-	public int NextVehicleId => _vehicles.Count.Equals(0) ? 1 : _vehicles.Max(b => b.Id) + 1;
-	public int NextPersonId => _persons.Count.Equals(0) ? 1 : _persons.Max(b => b.Id) + 1;
-	public int NextBookingId => _bookings.Count.Equals(0) ? 1 : _bookings.Max(b => b.Id) + 1;
 
-
-
+	public int GetNextItemId<T>(List<T> list, T item) where T : IBase
+	{
+		int NextId = list.Count.Equals(0) ? 1 : list.Max(b => b.Id) + 1;
+		item.Id = NextId;
+		return NextId;
+	}
+	
 
 	private List<T> GetCollection<T>() where T : IBase
 	{
@@ -127,8 +134,9 @@ public class CollectionData : IData
 		{
 			if (item is not null)
 			{
-			  GetCollection<T>().Add(item);
-				
+				GetCollection<T>().Add(item);
+				GetNextItemId(GetCollection<T>(), item);
+
 			}
 		}
 		catch (Exception ex)

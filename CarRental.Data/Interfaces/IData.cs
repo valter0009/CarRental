@@ -12,9 +12,6 @@ namespace CarRental.Data.Interfaces;
 
 public interface IData
 {
-	int NextVehicleId { get; }
-	int NextPersonId { get; }
-	int NextBookingId { get; }
 	async Task LoadDataFromJson() { }
 
 	List<T> Get<T>(Expression<Func<T, bool>>? expression) where T : IBase;
