@@ -54,14 +54,9 @@ public class CollectionData : IData
 		}
 		catch (Exception ex) { }
 
-		/*Tillfälliga bokningar, ska göras om i VG uppgiften 
-		_bookings.Add(new Booking(_vehicles.ElementAt(1), (Customer)_persons.ElementAt(1)));
-		_bookings.Add(new Booking(_vehicles.ElementAt(2), (Customer)_persons.ElementAt(2)));*/
-
-
 	}
 
-	//********************nytt
+
 
 	public int GetNextItemId<T>(List<T> list, T item) where T : IBase
 	{
@@ -104,23 +99,11 @@ public class CollectionData : IData
 		{
 			var collection = GetCollection<T>().AsQueryable();
 
-			if (expression is null)
-			{
-				throw new ArgumentNullException(nameof(expression));
-			}
+			if (expression is null) throw new ArgumentNullException(nameof(expression));
+			
+			var filteredCollection = collection.SingleOrDefault(expression);
 
-			var filteredCollection = collection.Where(expression).ToList();
-
-			if (filteredCollection.Count == 0)
-			{
-				throw new InvalidOperationException("No matching elements found.");
-			}
-			else if (filteredCollection.Count > 1)
-			{
-				throw new InvalidOperationException("Multiple matching elements found.");
-			}
-
-			return filteredCollection.First();
+			return filteredCollection ?? throw new InvalidOperationException("Multiple matching items found.");
 		}
 		catch (Exception ex)
 		{
@@ -136,7 +119,6 @@ public class CollectionData : IData
 			{
 				GetCollection<T>().Add(item);
 				GetNextItemId(GetCollection<T>(), item);
-
 			}
 		}
 		catch (Exception ex)
@@ -148,18 +130,13 @@ public class CollectionData : IData
 
 	public IBooking RentVehicle(int vehicleId, int customerId)
 	{
-		var vehicle = _vehicles.First(x => x.Id.Equals(vehicleId));
-		var customer = _persons.First(x => x.Id.Equals(customerId));
+		var vehicle = _vehicles.FirstOrDefault(x => x.Id.Equals(vehicleId));
+		var customer = _persons.FirstOrDefault(x => x.Id.Equals(customerId));
 
-		if (vehicle == null)
-		{
-			throw new ArgumentNullException("Vehicle not found");
-		}
+		if (vehicle == null) throw new ArgumentNullException("Vehicle not found");
 
-		if (customer == null)
-		{
-			throw new ArgumentNullException("Customer not found");
-		}
+		if (customer == null) throw new ArgumentNullException("Customer not found");
+
 		Booking booking = new Booking(vehicle, (Customer)customer);
 
 		_bookings.Add(booking);

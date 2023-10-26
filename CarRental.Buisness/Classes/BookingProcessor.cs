@@ -30,7 +30,7 @@ public class BookingProcessor
 	}
 	public IPerson? GetPerson(int ssn)
 	{
-		return _db.Single<IPerson>(x => x.SocialSecurityNumber == ssn);
+		return _db.Single<IPerson>(x => x.SocialSecurityNumber.Equals(ssn));
 	}
 	public IEnumerable<Vehicle> GetVehicles(VehicleStatuses status = default)
 	{
@@ -73,7 +73,7 @@ public class BookingProcessor
 	public void AddCustomer(string firstname, string lastname, int socialsecuritynumber)
 	{
 		Customer customer = new Customer(firstname, lastname, socialsecuritynumber);
-		_db.Add<Customer>(customer);
+		_db.Add<IPerson>(customer);
 	}
 	// Calling Default Interface Methods
 	public string[] VehicleStatusNames => _db.VehicleStatusNames;

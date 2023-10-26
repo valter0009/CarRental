@@ -3,7 +3,10 @@
 @using CarRental.Common.Interfaces
 @using CarRental.Common.Enums
 @inject HttpClient Http
+@inject VehicleInputModel vehicleInput
+@inject CustomerInputModel customerInput
 @inject BookingProcessor bp
+
 
 @code {
 	protected override async Task OnInitializedAsync()
@@ -155,10 +158,10 @@
 				</tr>
 
 				<tr>
-					<th><input type="text" class="form-control my-2" placeholder="SSN" aria-label="SSN" aria-describedby="basic-addon1"></th>
-					<th><input type="text" class="form-control my-2" placeholder="First Name" aria-label="First Name" aria-describedby="basic-addon1"></th>
-					<th><input type="text" class="form-control my-2" placeholder="Last Name" aria-label="Last Name" aria-describedby="basic-addon1"></th>
-					<th><button type="button" class="btn btn-outline-success mb-2">Add</button></th>
+					<th><input @bind="customerInput.SocialSecurityNumber"type="text" class="form-control my-2" placeholder="SSN" aria-label="SSN" aria-describedby="basic-addon1"></th>
+					<th><input @bind="customerInput.FirstName" type="text" class="form-control my-2" placeholder="First Name" aria-label="First Name" aria-describedby="basic-addon1"></th>
+					<th><input @bind="customerInput.LastName" type="text" class="form-control my-2" placeholder="Last Name" aria-label="Last Name" aria-describedby="basic-addon1"></th>
+					<th><button type="button" class="btn btn-outline-success mb-2" @onclick="()=>bp.AddCustomer(customerInput.FirstName,customerInput.LastName, customerInput.SocialSecurityNumber)">Add</button></th>
 				</tr>
 			</thead>
 			<tbody>
