@@ -48,13 +48,11 @@ public class BookingProcessor
    customerId)
 	{
 		await Task.Delay(5);
-		 _db.RentVehicle(vehicleId, customerId);
-		// Använd Task.Delay för att simulera tiden det tar
-		// att hämta data från ett API.
+		_db.RentVehicle(vehicleId, customerId);
 	}
-	public IBooking ReturnVehicle(int vehicleId, double kmReturned)
+	public IBooking ReturnVehicle(int vehicleId, double distance)
 	{
-		return _db.ReturnVehicle(vehicleId, kmReturned);
+		return _db.ReturnVehicle(vehicleId, distance);
 	}
 	public void AddVehicle(string make, string regnumber, VehicleTypes vehicletype, double dailycost, double kmcost, double odometer)
 	{
@@ -72,9 +70,11 @@ public class BookingProcessor
 
 
 	}
-	public void AddCustomer(string socialSecurityNumber, string firstName, string
-   lastName)
-	{ }
+	public void AddCustomer(string firstname, string lastname, int socialsecuritynumber)
+	{
+		Customer customer = new Customer(firstname, lastname, socialsecuritynumber);
+		_db.Add<Customer>(customer);
+	}
 	// Calling Default Interface Methods
 	public string[] VehicleStatusNames => _db.VehicleStatusNames;
 	public string[] VehicleTypeNames => _db.VehicleTypeNames;

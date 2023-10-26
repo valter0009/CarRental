@@ -166,10 +166,10 @@ public class CollectionData : IData
 
 		return booking;
 	}
-	public IBooking ReturnVehicle(int vehicleId, double kmReturned)
+	public IBooking ReturnVehicle(int vehicleId, double distance)
 	{
 		var booking = _bookings.First(x => x.Vehicle.Id.Equals(vehicleId));
-		booking.KmReturned = kmReturned;
+		booking.KmReturned = distance + booking.Vehicle.Odometer;
 		booking.ReturnedDate = DateTime.Now;
 		booking.BookingStatus = false;
 		booking.Vehicle.VehicleStatus = VehicleStatuses.Available;
