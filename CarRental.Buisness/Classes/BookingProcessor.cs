@@ -28,9 +28,9 @@ public class BookingProcessor
 		return _db.Get<IPerson>(null);
 
 	}
-	public IPerson? GetPerson(int ssn)
+	public IPerson? GetPerson(int Id)
 	{
-		return _db.Single<IPerson>(x => x.SocialSecurityNumber.Equals(ssn));
+		return _db.Single<IPerson>(x => x.Id.Equals(Id));
 	}
 	public IEnumerable<Vehicle> GetVehicles(VehicleStatuses status = default)
 	{
