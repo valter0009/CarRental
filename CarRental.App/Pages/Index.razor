@@ -45,23 +45,22 @@
 					<th scope="col">Status</th>
 				</tr>
 				<tr>
-					<th><input type="text" class="form-control my-2" placeholder="RegNo" aria-label="RegNo" aria-describedby="basic-addon1"></th>
-					<th><input type="text" class="form-control my-2" placeholder="Make" aria-label="Make" aria-describedby="basic-addon1"></th>
-					<th><input type="text" class="form-control my-2" placeholder="Odometer" aria-label="Odometer" aria-describedby="basic-addon1"></th>
-					<th><input type="text" class="form-control my-2" placeholder="Cost Km" aria-label="Cost Km" aria-describedby="basic-addon1"></th>
-					<th>
-						<div class="input-group my-2">
-							<select class="form-select" id="inputGroupSelect02">
-								<option selected>Type</option>
-								<option value="1">One</option>
-								<option value="2">Two</option>
-								<option value="3">Three</option>
-							</select>
-
+					<th><input @bind="vehicleInput.RegNumber" type=" text" class="form-control my-2" placeholder="RegNo" aria-label="RegNo" aria-describedby="basic-addon1"></th>
+					<th><input @bind="vehicleInput.Make" type="text" class="form-control my-2" placeholder="Make" aria-label="Make" aria-describedby="basic-addon1"></th>
+					<th><input @bind="vehicleInput.Odometer" type="text" class="form-control my-2" placeholder="Odometer" aria-label="Odometer" aria-describedby="basic-addon1"></th>
+					<th><input @bind="vehicleInput.CostKm" type="text" class="form-control my-2" placeholder="Cost Km" aria-label="Cost Km" aria-describedby="basic-addon1"></th>
+					<th><div class="input-group my-2">
+							<select @bind="vehicleInput.VehicleType" class=" form-select" id="inputGroupSelect02">
+							
+							@foreach (var vehicleType in bp.VehicleTypeNames)
+							{
+								<option>@vehicleType</option>
+							}
+						</select>
 						</div>
 					</th>
-					<th></th>
-					<th><button type="button" class="btn btn-outline-success mb-2">Add vehicle</button></th>
+					<th><input @bind="vehicleInput.DailyCost" type="text" class="form-control my-2" placeholder="Daily Cost" aria-label="Daily Cost" aria-describedby="basic-addon1"></th>
+					<th><button @onclick="()=>bp.AddVehicle(vehicleInput.Make,vehicleInput.RegNumber,vehicleInput.VehicleType,vehicleInput.DailyCost,vehicleInput.CostKm,vehicleInput.Odometer)" type=" button" class="btn btn-outline-success mb-2">Add vehicle</button></th>
 
 				</tr>
 			</thead>

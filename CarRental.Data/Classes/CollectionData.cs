@@ -52,7 +52,10 @@ public class CollectionData : IData
 				GetNextItemId(_vehicles, (Vehicle)motorcycle);
 			}
 		}
-		catch (Exception ex) { }
+		catch (Exception ex)
+		{
+			
+		}
 
 	}
 

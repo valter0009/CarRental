@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CarRental.Common.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,8 +12,10 @@ namespace CarRental.Buisness.Classes
 		public string? RegNumber { get; set; }
 		public string? Make { get; set; }
 		public double Odometer { get; set; }
+		public VehicleTypes VehicleType { get; set; }
 		public double CostKm { get; set; }
-		public string? VehicleType { get; set; }
+		public double DailyCost {  get; set; }
+		
 	}
 
 }

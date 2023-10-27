@@ -17,6 +17,7 @@ namespace CarRental.Data.Classes
 		{
             
             var result = await _httpClient.GetFromJsonAsync<List<T>>(fileName);
+			
 			return result is null ? new List<IBase>() : result.Cast<IBase>().ToList();
 			
 		}
