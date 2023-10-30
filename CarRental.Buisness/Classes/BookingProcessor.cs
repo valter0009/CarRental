@@ -2,7 +2,6 @@
 using CarRental.Common.Enums;
 using CarRental.Common.Interfaces;
 using CarRental.Data.Interfaces;
-using System.Xml.Linq;
 
 
 namespace CarRental.Buisness.Classes;
@@ -47,10 +46,11 @@ public class BookingProcessor
 	}*/
 	public async Task RentVehicle(int vehicleId, int
    customerId)
-	{  
-		try { 
-		await Task.Delay(5);
-		_db.RentVehicle(vehicleId, customerId);
+	{
+		try
+		{
+			await Task.Delay(5);
+			_db.RentVehicle(vehicleId, customerId);
 		}
 		catch (Exception ex) { ErrorMessage = ex.Message; }
 	}
@@ -63,36 +63,61 @@ public class BookingProcessor
 		if (string.IsNullOrWhiteSpace(make) || string.IsNullOrWhiteSpace(regnumber) || dailycost == null || kmcost == null || odometer == null)
 		{
 			ErrorMessage = "Please fill in all required fields.";
+			
+		}
+
+		if (CheckIfVehicleExists(regnumber))
+		{
+			ErrorMessage = "Vehicle with the same registration number already exists.";
 		}
 		else
 		{
+			Vehicle vehicle;
+
 			if (vehicletype == VehicleTypes.Motorcycle)
 			{
-				Motorcycle vehicle = new(make, regnumber, vehicletype, dailycost, kmcost, odometer);
-				_db.Add<Vehicle>(vehicle);
+				vehicle = new Motorcycle(make, regnumber, vehicletype, dailycost, kmcost, odometer);
 			}
 			else
 			{
-				Car vehicle = new(make, regnumber, vehicletype, dailycost, kmcost, odometer);
-				_db.Add<Vehicle>(vehicle);
+				vehicle = new Car(make, regnumber, vehicletype, dailycost, kmcost, odometer);
 			}
-		
-		}
-		
 
+			_db.Add<Vehicle>(vehicle);
+		}
 	}
+
+	
 	public void AddCustomer(string firstname, string lastname, int? socialsecuritynumber)
 	{
 		if (string.IsNullOrWhiteSpace(firstname) || string.IsNullOrWhiteSpace(lastname) || socialsecuritynumber == null)
 		{
 			ErrorMessage = "Please fill in all required fields.";
+			return;
+		}
+
+		if (CheckIfCustomerExists(firstname, lastname, socialsecuritynumber))
+		{
+			ErrorMessage = "Customer with the same first name, last name, and SSN already exists.";
 		}
 		else
 		{
 			Customer customer = new(firstname, lastname, socialsecuritynumber);
 			_db.Add<IPerson>(customer);
-			
 		}
+	}
+
+
+	private bool CheckIfVehicleExists(string regnumber)
+	{
+		return GetVehicles().Any(vehicle => vehicle.RegNumber == regnumber);
+	}
+	private bool CheckIfCustomerExists(string firstname, string lastname, int? socialsecuritynumber)
+	{
+		return GetCustomers().Any(customer =>
+			customer.FirstName == firstname &&
+			customer.LastName == lastname &&
+			customer.SocialSecurityNumber == socialsecuritynumber);
 	}
 	// Calling Default Interface Methods
 	public string[] VehicleStatusNames => _db.VehicleStatusNames;
