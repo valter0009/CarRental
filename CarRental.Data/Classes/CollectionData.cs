@@ -13,10 +13,10 @@ namespace CarRental.Data.Classes;
 
 public class CollectionData : IData
 {
-	readonly List<IPerson> _persons = new List<IPerson>();
-	readonly List<Vehicle> _vehicles = new List<Vehicle>();
-	readonly List<IBooking> _bookings = new List<IBooking>();
-	LoadData _data;
+	readonly List<IPerson> _persons = new();
+	readonly List<Vehicle> _vehicles = new();
+	readonly List<IBooking> _bookings = new();
+	readonly LoadData _data;
 	public CollectionData(LoadData data)
 	{
 
@@ -62,7 +62,7 @@ public class CollectionData : IData
 
 
 
-	public int GetNextItemId<T>(List<T> list, T item) where T : IBase
+	public static int GetNextItemId<T>(List<T> list, T item) where T : IBase
 	{
 		int NextId = list.Count.Equals(0) ? 1 : list.Max(b => b.Id) + 1;
 		item.Id = NextId;
@@ -137,11 +137,11 @@ public class CollectionData : IData
 		var vehicle = _vehicles.FirstOrDefault(x => x.Id.Equals(vehicleId));
 		var customer = _persons.FirstOrDefault(x => x.Id.Equals(customerId));
 
-		if (vehicle == null) throw new ArgumentNullException("Vehicle not found");
+		if (vehicle == null) throw new ArgumentNullException("You must choose a vehicle.");
 
-		if (customer == null) throw new ArgumentNullException("Customer not found");
+		if (customer == null) throw new ArgumentNullException("You must choose a customer.");
 
-		Booking booking = new Booking(vehicle, (Customer)customer);
+		Booking booking = new(vehicle, (Customer)customer);
 
 		_bookings.Add(booking);
 

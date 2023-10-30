@@ -14,7 +14,23 @@
 		await bp.LoadData();
 
 
-		
+
+	}
+
+	private void ClearCustomerInput()
+	{
+		customerInput.FirstName = "";
+		customerInput.LastName = "";
+		customerInput.SocialSecurityNumber = null;
+	}
+
+	private void ClearVehicleInput()
+	{
+		vehicleInput.Make = "";
+		vehicleInput.RegNumber = "";
+		vehicleInput.DailyCost = null;
+		vehicleInput.CostKm = null;
+		vehicleInput.Odometer = null;
 	}
 }
 
@@ -25,10 +41,10 @@
 <h1 class="my-3 text-center">Car Rental Assignment</h1>
 
 <div class="container-width">
-	@if (bp.errorMessage != string.Empty)
+	@if (bp.ErrorMessage != string.Empty)
 	{
 		<div class="mb-4 alert alert-danger">
-			<strong>Error: </strong>@bp.errorMessage
+			<strong>Error: </strong>@bp.ErrorMessage
 		</div>
 	}
 </div>
@@ -67,7 +83,16 @@
 						</div>
 					</th>
 					<th><input @bind="vehicleInput.DailyCost" type="text" class="form-control my-2" placeholder="Daily Cost" aria-label="Daily Cost" aria-describedby="basic-addon1"></th>
-					<th><button @onclick="()=>bp.AddVehicle(vehicleInput.Make,vehicleInput.RegNumber,vehicleInput.VehicleType,vehicleInput.DailyCost,vehicleInput.CostKm,vehicleInput.Odometer)" type=" button" class="btn btn-outline-success mb-2">Add vehicle</button></th>
+					<th>
+						<button @onclick="()=>{
+
+						bp.AddVehicle(vehicleInput.Make,vehicleInput.RegNumber,vehicleInput.VehicleType,vehicleInput.DailyCost,vehicleInput.CostKm,vehicleInput.Odometer);
+						ClearVehicleInput();
+											  }"
+								type=" button" class="btn btn-outline-success mb-2">
+							Add vehicle
+						</button>
+					</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -86,7 +111,7 @@
 							{
 								<div class="input-group my-2">
 									<select @bind="customerInput.Id" class="form-select" id="inputGroupSelect02">
-										<option value="">Select a customer</option>
+
 										@foreach (var customer in bp.GetCustomers())
 										{
 											<option value="@customer.Id">@customer.FullName (@customer.SocialSecurityNumber)</option>
@@ -180,7 +205,15 @@
 					<th><input @bind="customerInput.SocialSecurityNumber" type="text" class="form-control my-2" placeholder="SSN" aria-label="SSN" aria-describedby="basic-addon1"></th>
 					<th><input @bind="customerInput.FirstName" type="text" class="form-control my-2" placeholder="First Name" aria-label="First Name" aria-describedby="basic-addon1"></th>
 					<th><input @bind="customerInput.LastName" type="text" class="form-control my-2" placeholder="Last Name" aria-label="Last Name" aria-describedby="basic-addon1"></th>
-					<th><button type="button" class="btn btn-outline-success mb-2" @onclick="()=>bp.AddCustomer(customerInput.FirstName,customerInput.LastName, customerInput.SocialSecurityNumber)">Add</button></th>
+					<th>
+						<button type="button" class="btn btn-outline-success mb-2" @onclick="()=>{
+
+					bp.AddCustomer(customerInput.FirstName,customerInput.LastName, customerInput.SocialSecurityNumber);
+					ClearCustomerInput();
+					                                                                             }">
+							Add
+						</button>
+					</th>
 				</tr>
 			</thead>
 			<tbody>
