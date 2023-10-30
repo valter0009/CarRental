@@ -10,6 +10,7 @@ namespace CarRental.Buisness.Classes;
 public class BookingProcessor
 {
 	private readonly IData _db;
+	public string errorMessage { get; set; } = string.Empty;
 
 
 	public BookingProcessor(IData db) => _db = db;
@@ -46,34 +47,49 @@ public class BookingProcessor
 	}
 	public async Task RentVehicle(int vehicleId, int
    customerId)
-	{
+	{  
+		try { 
 		await Task.Delay(5);
 		_db.RentVehicle(vehicleId, customerId);
+		}
+		catch (Exception ex) { errorMessage = ex.Message; }
 	}
-	public IBooking ReturnVehicle(int vehicleId, double distance)
+	public IBooking ReturnVehicle(int vehicleId, double? distance)
 	{
 		return _db.ReturnVehicle(vehicleId, distance);
 	}
-	public void AddVehicle(string make, string regnumber, VehicleTypes vehicletype, double dailycost, double kmcost, double odometer)
+	public void AddVehicle(string make, string regnumber, VehicleTypes vehicletype, double? dailycost, double? kmcost, double? odometer)
 	{
-		if (vehicletype == VehicleTypes.Motorcycle)
+		if (string.IsNullOrWhiteSpace(make) || string.IsNullOrWhiteSpace(regnumber) || dailycost == null || kmcost == null || odometer == null)
 		{
-			Motorcycle vehicle = new Motorcycle(make, regnumber, vehicletype, dailycost, kmcost, odometer);
-			_db.Add<Vehicle>(vehicle);
+			errorMessage = "Please fill in all required fields.";
 		}
-
 		else
 		{
-			Car vehicle = new Car(make, regnumber, vehicletype, dailycost, kmcost, odometer);
-			_db.Add<Vehicle>(vehicle);
+			if (vehicletype == VehicleTypes.Motorcycle)
+			{
+				Motorcycle vehicle = new Motorcycle(make, regnumber, vehicletype, dailycost, kmcost, odometer);
+				_db.Add<Vehicle>(vehicle);
+			}
+			else
+			{
+				Car vehicle = new Car(make, regnumber, vehicletype, dailycost, kmcost, odometer);
+				_db.Add<Vehicle>(vehicle);
+			}
 		}
 
-
 	}
-	public void AddCustomer(string firstname, string lastname, int socialsecuritynumber)
+	public void AddCustomer(string firstname, string lastname, int? socialsecuritynumber)
 	{
-		Customer customer = new Customer(firstname, lastname, socialsecuritynumber);
-		_db.Add<IPerson>(customer);
+		if (string.IsNullOrWhiteSpace(firstname) || string.IsNullOrWhiteSpace(lastname) || socialsecuritynumber == null)
+		{
+			errorMessage = "Please fill in all required fields.";
+		}
+		else
+		{
+			Customer customer = new Customer(firstname, lastname, socialsecuritynumber);
+			_db.Add<IPerson>(customer);
+		}
 	}
 	// Calling Default Interface Methods
 	public string[] VehicleStatusNames => _db.VehicleStatusNames;

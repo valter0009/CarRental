@@ -7,6 +7,7 @@ using System.Reflection;
 using CarRental.Common.Extensions;
 using System;
 using System.Runtime.ConstrainedExecution;
+using System.Data;
 
 namespace CarRental.Data.Classes;
 
@@ -54,7 +55,7 @@ public class CollectionData : IData
 		}
 		catch (Exception ex)
 		{
-			
+
 		}
 
 	}
@@ -67,7 +68,7 @@ public class CollectionData : IData
 		item.Id = NextId;
 		return NextId;
 	}
-	
+
 
 	private List<T> GetCollection<T>() where T : IBase
 	{
@@ -103,7 +104,7 @@ public class CollectionData : IData
 			var collection = GetCollection<T>().AsQueryable();
 
 			if (expression is null) throw new ArgumentNullException(nameof(expression));
-			
+
 			var filteredCollection = collection.SingleOrDefault(expression);
 
 			return filteredCollection ?? throw new InvalidOperationException("Multiple matching items found.");
@@ -146,14 +147,14 @@ public class CollectionData : IData
 
 		return booking;
 	}
-	public IBooking ReturnVehicle(int vehicleId, double distance)
+	public IBooking ReturnVehicle(int vehicleId, double? distance)
 	{
 		var booking = _bookings.First(x => x.Vehicle.Id.Equals(vehicleId));
 		booking.KmReturned = distance + booking.Vehicle.Odometer;
 		booking.ReturnedDate = DateTime.Now;
 		booking.BookingStatus = false;
 		booking.Vehicle.VehicleStatus = VehicleStatuses.Available;
-		booking.TotalCost= booking.TotalCost();
+		booking.TotalCost = booking.TotalCost();
 		return booking;
 
 	}

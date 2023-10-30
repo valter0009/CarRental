@@ -11,10 +11,12 @@ namespace CarRental.Buisness.Classes
 	{
 		public string? RegNumber { get; set; }
 		public string? Make { get; set; }
-		public double Odometer { get; set; }
+		public double? Odometer { get; set; }
 		public VehicleTypes VehicleType { get; set; }
-		public double CostKm { get; set; }
-		public double DailyCost {  get; set; }
+		public double? CostKm { get; set; }
+		public double? DailyCost {  get; set; }
+
+		public double? Distance { get; set; }
 		
 	}
 

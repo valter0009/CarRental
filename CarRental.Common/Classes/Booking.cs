@@ -17,8 +17,8 @@ namespace CarRental.Common.Classes
 		public DateTime RentedDate { get; init; }
 		public DateTime ReturnedDate { get; set; }
 
-		public double KmReturned {  get; set; }
-		public double TotalCost { get; set; }
+		public double? KmReturned {  get; set; }
+		public double? TotalCost { get; set; }
 		public bool BookingStatus { get; set; } = false;
 
 		public Booking(Vehicle vehicle, Customer customer)

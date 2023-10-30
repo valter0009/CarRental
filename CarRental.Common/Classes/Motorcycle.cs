@@ -9,7 +9,7 @@ namespace CarRental.Common.Classes
 		
 
 
-		public Motorcycle(string make, string regnumber, VehicleTypes vehicletype, double dailycost, double kmcost, double odometer):base(make, regnumber, vehicletype, dailycost, kmcost, odometer)
+		public Motorcycle(string make, string regnumber, VehicleTypes vehicletype, double? dailycost, double? kmcost, double? odometer):base(make, regnumber, vehicletype, dailycost, kmcost, odometer)
 		{
 			
 			Make = make;

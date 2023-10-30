@@ -19,11 +19,11 @@ namespace CarRental.Common.Classes
 		public VehicleTypes VehicleType { get; init; }
 		public VehicleStatuses VehicleStatus { get; set; } = VehicleStatuses.Available;
 
-		public double DailyCost { get; init; }
-		public double KmCost { get; init; }
-		public double Odometer { get; set; }
+		public double? DailyCost { get; init; }
+		public double? KmCost { get; init; }
+		public double? Odometer { get; set; }
 
-		public Vehicle(string make, string regnumber, VehicleTypes vehicletype, double dailycost, double kmcost, double odometer)
+		public Vehicle(string make, string regnumber, VehicleTypes vehicletype, double? dailycost, double? kmcost, double? odometer)
 		{
 			
 			Make = make;

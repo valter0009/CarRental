@@ -14,10 +14,7 @@
 		await bp.LoadData();
 
 
-		bp.AddVehicle("Lada", "FFF222", VehicleTypes.Sedan, 200, 2, 2500);
-
-		await bp.RentVehicle(6, 1);
-		bp.ReturnVehicle(6, 3000);
+		
 	}
 }
 
@@ -27,20 +24,29 @@
 
 <h1 class="my-3 text-center">Car Rental Assignment</h1>
 
+<div class="container-width">
+	@if (bp.errorMessage != string.Empty)
+	{
+		<div class="mb-4 alert alert-danger">
+			<strong>Error: </strong>@bp.errorMessage
+		</div>
+	}
+</div>
+
 
 <div class="container">
 	<h4 class=" my-3">Vehicles</h4>
 
 	<div id="vehicles" class="table-responsive col-12  ">
 		<table class="table table-bordered ">
-			<thead >
+			<thead>
 				<tr class="bg-dark text-light">
 					<th scope="col">RegNo</th>
 					<th scope="col">Make</th>
 					<th scope="col">Odometer</th>
 					<th scope="col">Cost Km</th>
 					<th scope="col">Vehicle Type</th>
-					<th scope="col">$Day</th>
+					<th scope="col">Daily Cost</th>
 					<th scope="col">Action</th>
 					<th scope="col">Status</th>
 				</tr>
@@ -49,19 +55,19 @@
 					<th><input @bind="vehicleInput.Make" type="text" class="form-control my-2" placeholder="Make" aria-label="Make" aria-describedby="basic-addon1"></th>
 					<th><input @bind="vehicleInput.Odometer" type="text" class="form-control my-2" placeholder="Odometer" aria-label="Odometer" aria-describedby="basic-addon1"></th>
 					<th><input @bind="vehicleInput.CostKm" type="text" class="form-control my-2" placeholder="Cost Km" aria-label="Cost Km" aria-describedby="basic-addon1"></th>
-					<th><div class="input-group my-2">
+					<th>
+						<div class="input-group my-2">
 							<select @bind="vehicleInput.VehicleType" class=" form-select" id="inputGroupSelect02">
-							
-							@foreach (var vehicleType in bp.VehicleTypeNames)
-							{
-								<option>@vehicleType</option>
-							}
-						</select>
+
+								@foreach (var vehicleType in bp.VehicleTypeNames)
+								{
+									<option>@vehicleType</option>
+								}
+							</select>
 						</div>
 					</th>
 					<th><input @bind="vehicleInput.DailyCost" type="text" class="form-control my-2" placeholder="Daily Cost" aria-label="Daily Cost" aria-describedby="basic-addon1"></th>
 					<th><button @onclick="()=>bp.AddVehicle(vehicleInput.Make,vehicleInput.RegNumber,vehicleInput.VehicleType,vehicleInput.DailyCost,vehicleInput.CostKm,vehicleInput.Odometer)" type=" button" class="btn btn-outline-success mb-2">Add vehicle</button></th>
-
 				</tr>
 			</thead>
 			<tbody>
@@ -71,24 +77,35 @@
 						<th scope="row">@vehicle.RegNumber</th>
 						<td>@vehicle.Make</td>
 						<td>@vehicle.Odometer</td>
-						<td>@vehicle.KmCost</td>
+						<td>@vehicle.KmCost$</td>
 						<td>@vehicle.VehicleType</td>
 						<td>@vehicle.DailyCost$</td>
 
 						<td>
-							<div class="input-group my-2">
-								<select @bind="customerInput.Id" class="form-select" id="inputGroupSelect02">
-									<option value="">Select a customer</option>
-									@foreach (var customer in bp.GetCustomers())
-									{
-										<option value="@customer.Id">@customer.FullName (@customer.SocialSecurityNumber)</option>
-									}
-								</select>
-							</div>
-							<button @onclick="()=>bp.RentVehicle(vehicle.Id, customerInput.Id)" type=" button" class="btn btn-outline-success mb-2">Add</button>
+							@if (vehicle.VehicleStatus == VehicleStatuses.Available)
+							{
+								<div class="input-group my-2">
+									<select @bind="customerInput.Id" class="form-select" id="inputGroupSelect02">
+										<option value="">Select a customer</option>
+										@foreach (var customer in bp.GetCustomers())
+										{
+											<option value="@customer.Id">@customer.FullName (@customer.SocialSecurityNumber)</option>
+										}
+									</select>
+								</div>
 
-							
+								<button @onclick="()=>bp.RentVehicle(vehicle.Id, customerInput.Id)" type=" button" class="btn btn-outline-success mb-2">Add</button>
+							}
+							else
+							{
+
+							<th><input @bind="vehicleInput.Distance" type="text" class="form-control my-2" placeholder="Distance" aria-label="Distance" aria-describedby="basic-addon1"></th>
+
+							<button @onclick="()=>bp.ReturnVehicle(vehicle.Id, vehicleInput.Distance)" type=" button" class="btn btn-outline-danger mb-2">Return</button>
+							}
 						</td>
+
+
 
 
 						<td>
@@ -107,7 +124,7 @@
 
 	<div id="bookings" class="table-responsive table-bordered col-10 ">
 		<table class="table">
-			<thead >
+			<thead>
 				<tr class="bg-dark text-light">
 					<th scope="col">RegNo</th>
 					<th scope="col">Customer</th>
@@ -152,7 +169,7 @@
 
 	<div id="Customers" class="table-responsive table-bordered  col-5">
 		<table class="table ">
-			<thead >
+			<thead>
 				<tr class="bg-dark text-light">
 					<th scope="col">SSN</th>
 					<th scope="col">First Name</th>
@@ -160,7 +177,7 @@
 				</tr>
 
 				<tr>
-					<th><input @bind="customerInput.SocialSecurityNumber"type="text" class="form-control my-2" placeholder="SSN" aria-label="SSN" aria-describedby="basic-addon1"></th>
+					<th><input @bind="customerInput.SocialSecurityNumber" type="text" class="form-control my-2" placeholder="SSN" aria-label="SSN" aria-describedby="basic-addon1"></th>
 					<th><input @bind="customerInput.FirstName" type="text" class="form-control my-2" placeholder="First Name" aria-label="First Name" aria-describedby="basic-addon1"></th>
 					<th><input @bind="customerInput.LastName" type="text" class="form-control my-2" placeholder="Last Name" aria-label="Last Name" aria-describedby="basic-addon1"></th>
 					<th><button type="button" class="btn btn-outline-success mb-2" @onclick="()=>bp.AddCustomer(customerInput.FirstName,customerInput.LastName, customerInput.SocialSecurityNumber)">Add</button></th>

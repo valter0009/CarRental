@@ -21,7 +21,7 @@ public interface IData
 	public string[] VehicleStatusNames => Enum.GetNames(typeof(VehicleStatuses));
 	public string[] VehicleTypeNames => Enum.GetNames(typeof(VehicleTypes));
 	public IBooking RentVehicle(int vehicleId, int customerId);
-	public IBooking ReturnVehicle(int vehicleId, double distance);
+	public IBooking ReturnVehicle(int vehicleId, double? distance);
 	public VehicleTypes GetVehicleType(string name)
 	{
 		if (Enum.TryParse(name, out VehicleTypes vehicleType))

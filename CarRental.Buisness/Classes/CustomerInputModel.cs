@@ -11,7 +11,7 @@ namespace CarRental.Buisness.Classes
 		public int Id { get; set; }
 		public string? FirstName { get; set; }
 		public string? LastName { get; set; }
-		public int SocialSecurityNumber { get; set; }
+		public int? SocialSecurityNumber { get; set; }
 	}
 
 }
