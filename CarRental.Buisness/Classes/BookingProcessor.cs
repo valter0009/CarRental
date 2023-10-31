@@ -29,22 +29,10 @@ public class BookingProcessor
 		return _db.Get<IPerson>(null);
 
 	}
-	public IPerson? GetPerson(int Id)
-	{
-		return _db.Single<IPerson>(x => x.Id.Equals(Id));
-	}
 	public IEnumerable<Vehicle> GetVehicles(VehicleStatuses status = default)
 	{
 		return _db.Get<Vehicle>(null);
 	}
-	/*public Vehicle? GetVehicle(int vehicleId)
-	{
-		return _db.Single<Vehicle>(x => x.Id == vehicleId);
-	}
-	public Vehicle? GetVehicle(string regNo)
-	{
-		return _db.Single<Vehicle>(x => x.RegNumber == regNo);
-	}*/
 	public async Task RentVehicle(int vehicleId, int
    customerId)
 	{
@@ -136,7 +124,7 @@ public class BookingProcessor
 			x.LastName == lastname &&
 			x.SocialSecurityNumber == socialsecuritynumber);
 	}
-	// Calling Default Interface Methods
+	
 	public string[] VehicleStatusNames => _db.VehicleStatusNames;
 	public string[] VehicleTypeNames => _db.VehicleTypeNames;
 	public VehicleTypes GetVehicleType(string name) => _db.GetVehicleType(name);
