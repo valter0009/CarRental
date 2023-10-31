@@ -10,6 +10,7 @@ public class BookingProcessor
 {
 	private readonly IData _db;
 	public string ErrorMessage { get; set; } = string.Empty;
+	public bool RentingInProgress { get; set; } = false;
 
 
 	public BookingProcessor(IData db) => _db = db;
@@ -49,10 +50,26 @@ public class BookingProcessor
 	{
 		try
 		{
-			await Task.Delay(5);
-			_db.RentVehicle(vehicleId, customerId);
+
+			if (GetBookings().Any(x => x.Vehicle.Id.Equals(vehicleId)
+			&& x.Vehicle.VehicleStatus.Equals(VehicleStatuses.Booked)))
+			{
+				ErrorMessage = "Vehicle is already booked, please select another vehicle.";
+			}
+			else if (GetBookings().Any(x => x.Customer.Id.Equals(customerId) && x.Vehicle.VehicleStatus.Equals(VehicleStatuses.Booked)))
+			{
+				ErrorMessage = "This customer already has a booking in their name. Please select another customer.";
+			}
+			else
+			{
+				RentingInProgress = true;
+				await Task.Delay(3000);
+				_db.RentVehicle(vehicleId, customerId);
+
+			}
 		}
 		catch (Exception ex) { ErrorMessage = ex.Message; }
+		finally { RentingInProgress = false; }
 	}
 	public IBooking ReturnVehicle(int vehicleId, double? distance)
 	{
@@ -63,7 +80,7 @@ public class BookingProcessor
 		if (string.IsNullOrWhiteSpace(make) || string.IsNullOrWhiteSpace(regnumber) || dailycost == null || kmcost == null || odometer == null)
 		{
 			ErrorMessage = "Please fill in all required fields.";
-			
+			return;
 		}
 
 		if (CheckIfVehicleExists(regnumber))
@@ -87,7 +104,7 @@ public class BookingProcessor
 		}
 	}
 
-	
+
 	public void AddCustomer(string firstname, string lastname, int? socialsecuritynumber)
 	{
 		if (string.IsNullOrWhiteSpace(firstname) || string.IsNullOrWhiteSpace(lastname) || socialsecuritynumber == null)
@@ -110,14 +127,14 @@ public class BookingProcessor
 
 	private bool CheckIfVehicleExists(string regnumber)
 	{
-		return GetVehicles().Any(vehicle => vehicle.RegNumber == regnumber);
+		return GetVehicles().Any(x => x.RegNumber == regnumber);
 	}
 	private bool CheckIfCustomerExists(string firstname, string lastname, int? socialsecuritynumber)
 	{
-		return GetCustomers().Any(customer =>
-			customer.FirstName == firstname &&
-			customer.LastName == lastname &&
-			customer.SocialSecurityNumber == socialsecuritynumber);
+		return GetCustomers().Any(x =>
+			x.FirstName == firstname &&
+			x.LastName == lastname &&
+			x.SocialSecurityNumber == socialsecuritynumber);
 	}
 	// Calling Default Interface Methods
 	public string[] VehicleStatusNames => _db.VehicleStatusNames;

@@ -6,7 +6,7 @@ namespace CarRental.Common.Extensions;
 public static class CalculateCost
 {
 	public static double? TotalCost(this IBooking booking) { 
-	var total = CalculateDailyCost(booking.RentedDate, booking.ReturnedDate, booking.Vehicle.DailyCost) + CalculateKmCost(booking, booking.KmReturned);
+	var total = CalculateDailyCost(booking.RentedDate, booking.ReturnedDate, booking.Vehicle.DailyCost) + CalculateKmCost(booking, booking.KmWhenReturned);
 	return total;
 	}
 	private static double? CalculateKmCost(IBooking booking, double? kmreturned)

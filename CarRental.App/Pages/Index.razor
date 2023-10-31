@@ -31,6 +31,12 @@
 		vehicleInput.DailyCost = null;
 		vehicleInput.CostKm = null;
 		vehicleInput.Odometer = null;
+		vehicleInput.Distance = null;
+	}
+
+	private void CloseErrorMessage()
+	{
+		bp.ErrorMessage = string.Empty;
 	}
 }
 
@@ -40,11 +46,12 @@
 
 <h1 class="my-3 text-center">Car Rental Assignment</h1>
 
-<div class="container-width">
+<div class="container">
 	@if (bp.ErrorMessage != string.Empty)
 	{
-		<div class="mb-4 alert alert-danger">
-			<strong>Error: </strong>@bp.ErrorMessage
+		<div class="mb-4 alert alert-danger d-flex justify-content-between flex-row-reverse">
+			<button type="button" class="btn-close" @onclick="CloseErrorMessage"></button>
+			<span><strong>Error: </strong>@bp.ErrorMessage</span>
 		</div>
 	}
 </div>
@@ -53,8 +60,8 @@
 <div class="container">
 	<h4 class=" my-3">Vehicles</h4>
 
-	<div id="vehicles" class="table-responsive col-12  ">
-		<table class="table table-bordered ">
+	<div id="vehicles" class="table-responsive col-12">
+		<table class="table table-bordered">
 			<thead>
 				<tr class="bg-dark text-light">
 					<th scope="col">RegNo</th>
@@ -67,13 +74,13 @@
 					<th scope="col">Status</th>
 				</tr>
 				<tr>
-					<th><input @bind="vehicleInput.RegNumber" type=" text" class="form-control my-2" placeholder="RegNo" aria-label="RegNo" aria-describedby="basic-addon1"></th>
-					<th><input @bind="vehicleInput.Make" type="text" class="form-control my-2" placeholder="Make" aria-label="Make" aria-describedby="basic-addon1"></th>
-					<th><input @bind="vehicleInput.Odometer" type="text" class="form-control my-2" placeholder="Odometer" aria-label="Odometer" aria-describedby="basic-addon1"></th>
-					<th><input @bind="vehicleInput.CostKm" type="text" class="form-control my-2" placeholder="Cost Km" aria-label="Cost Km" aria-describedby="basic-addon1"></th>
+					<th><input disabled="@bp.RentingInProgress" @bind="vehicleInput.RegNumber" type=" text" class="form-control my-2" placeholder="RegNo" aria-label="RegNo" aria-describedby="basic-addon1"></th>
+					<th><input disabled="@bp.RentingInProgress" @bind="vehicleInput.Make" type="text" class="form-control my-2" placeholder="Make" aria-label="Make" aria-describedby="basic-addon1"></th>
+					<th><input disabled="@bp.RentingInProgress" @bind="vehicleInput.Odometer" type="text" class="form-control my-2" placeholder="Odometer" aria-label="Odometer" aria-describedby="basic-addon1"></th>
+					<th><input disabled="@bp.RentingInProgress" @bind="vehicleInput.CostKm" type="text" class="form-control my-2" placeholder="Cost Km" aria-label="Cost Km" aria-describedby="basic-addon1"></th>
 					<th>
-						<div class="input-group my-2">
-							<select @bind="vehicleInput.VehicleType" class=" form-select" id="inputGroupSelect02">
+						<div disabled="@bp.RentingInProgress" class="input-group my-2">
+							<select @bind="vehicleInput.VehicleType" class=" form-select" id="inputGroupSelect02" disabled="@bp.RentingInProgress">
 
 								@foreach (var vehicleType in bp.VehicleTypeNames)
 								{
@@ -82,9 +89,9 @@
 							</select>
 						</div>
 					</th>
-					<th><input @bind="vehicleInput.DailyCost" type="text" class="form-control my-2" placeholder="Daily Cost" aria-label="Daily Cost" aria-describedby="basic-addon1"></th>
+					<th><input disabled="@bp.RentingInProgress" @bind="vehicleInput.DailyCost" type="text" class="form-control my-2" placeholder="Daily Cost" aria-label="Daily Cost" aria-describedby="basic-addon1"></th>
 					<th>
-						<button @onclick="()=>{
+						<button disabled="@bp.RentingInProgress" @onclick="()=>{
 
 						bp.AddVehicle(vehicleInput.Make,vehicleInput.RegNumber,vehicleInput.VehicleType,vehicleInput.DailyCost,vehicleInput.CostKm,vehicleInput.Odometer);
 						ClearVehicleInput();
@@ -93,15 +100,26 @@
 							Add vehicle
 						</button>
 					</th>
+					@if (bp.RentingInProgress)
+					{
+						<th>
+
+							<div class="spinner-border mx-3 mb-2" role="status">
+
+								<span class="visually-hidden">Loading...</span>
+							</div>
+
+						</th>
+					}
 				</tr>
 			</thead>
 			<tbody>
 				@foreach (var vehicle in bp.GetVehicles())
 				{
 					<tr>
-						<th scope="row">@vehicle.RegNumber</th>
+						<th scope="row">@vehicle.RegNumber.ToUpper()</th>
 						<td>@vehicle.Make</td>
-						<td>@vehicle.Odometer</td>
+						<td>@vehicle.Odometer km</td>
 						<td>@vehicle.KmCost$</td>
 						<td>@vehicle.VehicleType</td>
 						<td>@vehicle.DailyCost$</td>
@@ -110,7 +128,7 @@
 							@if (vehicle.VehicleStatus == VehicleStatuses.Available)
 							{
 								<div class="input-group my-2">
-									<select @bind="customerInput.Id" class="form-select" id="inputGroupSelect02">
+									<select disabled="@bp.RentingInProgress" @bind="customerInput.Id" class="form-select" id="inputGroupSelect02">
 
 										@foreach (var customer in bp.GetCustomers())
 										{
@@ -119,14 +137,14 @@
 									</select>
 								</div>
 
-								<button @onclick="()=>bp.RentVehicle(vehicle.Id, customerInput.Id)" type=" button" class="btn btn-outline-success mb-2">Add</button>
+								<button disabled="@bp.RentingInProgress" @onclick="()=>bp.RentVehicle(vehicle.Id, customerInput.Id)" type=" button" class="btn btn-outline-success mb-2">Rent</button>
 							}
 							else
 							{
 
 							<th><input @bind="vehicleInput.Distance" type="text" class="form-control my-2" placeholder="Distance" aria-label="Distance" aria-describedby="basic-addon1"></th>
 
-							<button @onclick="()=>bp.ReturnVehicle(vehicle.Id, vehicleInput.Distance)" type=" button" class="btn btn-outline-danger mb-2">Return</button>
+							<button @onclick="()=>{bp.ReturnVehicle(vehicle.Id, vehicleInput.Distance);ClearVehicleInput();}" type=" button" class="btn btn-outline-danger mb-2">Return</button>
 							}
 						</td>
 
@@ -168,8 +186,8 @@
 
 						<td>@booking.Vehicle.RegNumber</td>
 						<td>@booking.Customer.FullName</td>
-						<td>@booking.Vehicle.Odometer</td>
-						<td>@booking.KmReturned </td>
+						<td>@booking.KmWhenRented</td>
+						<td>@booking.KmWhenReturned </td>
 						<td>@booking.RentedDate.ToString("d")</td>
 						<td>
 							<span class="@(booking.ReturnedDate < booking.RentedDate ? "d-none" : "")">
