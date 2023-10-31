@@ -29,7 +29,7 @@ public class BookingProcessor
 		return _db.Get<IPerson>(null);
 
 	}
-	public IEnumerable<Vehicle> GetVehicles(VehicleStatuses status = default)
+	public IEnumerable<Vehicle> GetVehicles()
 	{
 		return _db.Get<Vehicle>(null);
 	}

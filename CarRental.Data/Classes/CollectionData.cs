@@ -55,7 +55,7 @@ public class CollectionData : IData
 		}
 		catch (Exception ex)
 		{
-
+			
 		}
 
 	}
@@ -141,8 +141,10 @@ public class CollectionData : IData
 
 		if (customer == null) throw new ArgumentNullException("You must choose a customer.");
 
-		Booking booking = new(vehicle, (Customer)customer);
-		booking.BookingStatus = true;
+		Booking booking = new(vehicle, (Customer)customer)
+		{
+			BookingStatus = true
+		};
 
 		_bookings.Add(booking);
 
@@ -151,7 +153,7 @@ public class CollectionData : IData
 	public IBooking ReturnVehicle(int vehicleId, double? distance)
 	{
 		var booking = _bookings.First(x => x.Vehicle.Id.Equals(vehicleId) && x.BookingStatus.Equals(true));
-		distance = distance ?? 0;
+		distance ??= 0;
 		booking.KmWhenReturned = distance + booking.Vehicle.Odometer;
 		booking.KmWhenRented = booking.Vehicle.Odometer;
 		booking.ReturnedDate = DateTime.Now;
